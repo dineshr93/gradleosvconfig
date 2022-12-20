@@ -1,0 +1,5 @@
+configurations {
+    releaseRuntimeClasspath {
+        resolutionStrategy.activateDependencyLocking()
+    }
+}
