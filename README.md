@@ -9,7 +9,7 @@ osv vulnerability check binary config for gradle project
 3. If any vulnerability is there it prints the details and fails the execution
 
 
-```sh
+```js
 {
   "package": {
     "name": "com.squareup.okhttp3:okhttp",
