@@ -1,7 +1,8 @@
 
 ROOT_DIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
-TEST_DIR := /home/dinesh/asterix2/AddressBookSync
-CONFIG_FILE := /home/dinesh/asterix2/gradleosvconfig/gradleconfig.txt
+TEST_DIR := ~/asterix2/AddressBookSync
+CONFIG_FILE := ~/asterix2/gradleosvconfig/gradleconfig.txt
+SOURCING_SCRIPT_FILE := ~/devenvs/asterix2-int-devenv-1.7.0/main/env_setup.sh
 
 EXE_NAME := goc
 BIN := bin
@@ -49,7 +50,7 @@ build:
 
 test: clean build
 	echo "===========Testing==============="
-	${exe} ${PROJ_DIR} ${CONFIG_FILE} ${TEST_DIR}
+	${exe} ${PROJ_DIR} ${CONFIG_FILE} ${TEST_DIR} ${SOURCING_SCRIPT_FILE}
 
 del:
 	${RM_RF_CMD} bin/*
