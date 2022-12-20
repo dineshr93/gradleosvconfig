@@ -32,6 +32,11 @@ build: $@ ## Generate the windows and linux builds for sep
 test: $@ ## Separates the test folder
 git: $@ ## commits and push the changes if commit msg m is given without spaces ex m=added_files
 
+prep:
+	cd ${TEST_DIR}
+	git clean -fd /home/dinesh/asterix2/AddressBookSync
+	git restore /home/dinesh/asterix2/AddressBookSync/build.gradle
+
 build:
 	echo "Compiling for every OS and Platform"
 	set GOOS=windows
