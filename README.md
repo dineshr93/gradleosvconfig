@@ -92,7 +92,7 @@ make: *** [test] Error 1
 
 ```sh
 
-osv gradleconfig.txt gradle_app_dir sourcing_env_shell_script
+goc gradleconfig.txt gradle_app_dir sourcing_env_shell_script
 ```
 
 ## Command to run
@@ -100,7 +100,7 @@ osv gradleconfig.txt gradle_app_dir sourcing_env_shell_script
 ```sh
 
 
-usage:osv gradleconfig.txt gradle_app_dir sourcing_env_shell_script
+usage:goc gradleconfig.txt gradle_app_dir sourcing_env_shell_script
 
 options:
  gradleconfig.txt  find this file in this repo. config for releaseRuntimeClasspath. you can alter on your own
