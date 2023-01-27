@@ -15,13 +15,19 @@ func main() {
 	var appDir string
 	var configFile string
 	var sourcingscript string
+	var lengthofargs int
 	fmt.Println(strings.Repeat("=", 10), "start of", path.Base(os.Args[0]), strings.Repeat("=", 10))
-	if l := len(os.Args); l != 4 {
+	if lengthofargs = len(os.Args); !(lengthofargs >= 3 && lengthofargs <= 4) {
+		fmt.Println("No of arguments given:", lengthofargs)
 		log.Fatalln("Please pass the configfile apprepo for ex: gradleconfig.txt FULL_PATH_GRADLE_APP sourcing_fullpath_scriptsh")
 	} else {
+		fmt.Println("No of arguments given:", lengthofargs)
 		configFile = os.Args[1]
 		appDir = os.Args[2]
-		sourcingscript = os.Args[3]
+
+		if lengthofargs == 4 {
+			sourcingscript = os.Args[3]
+		}
 		if _, err := os.Stat(configFile); os.IsNotExist(err) {
 			// path/to/whatever does not exist
 			log.Fatalln("Configfile doesnt exist -> " + configFile)
@@ -30,9 +36,12 @@ func main() {
 			// path/to/whatever does not exist
 			log.Fatalln("Directory doesnt exist -> " + appDir)
 		}
-		if _, err := os.Stat(sourcingscript); os.IsNotExist(err) {
-			// path/to/whatever does not exist
-			log.Fatalln("Configfile doesnt exist -> " + configFile)
+
+		if lengthofargs == 4 {
+			if _, err := os.Stat(sourcingscript); os.IsNotExist(err) {
+				// path/to/whatever does not exist
+				log.Fatalln("Configfile doesnt exist -> " + configFile)
+			}
 		}
 	}
 	// println(appDir)
@@ -62,8 +71,12 @@ func main() {
 		log.Fatalln(err)
 	}
 	_ = n
-
-	cmd := exec.Command("bash", "-c", "source "+sourcingscript+" ; cd "+appDir+"; gradle dependencies --configuration releaseRuntimeClasspath --write-locks ; osv --L gradle.lockfile --json > vuln2.json; jq \".results | length\" vuln2.json")
+	var cmd *exec.Cmd
+	if lengthofargs == 3 {
+		cmd = exec.Command("bash", "-c", "cd "+appDir+"; gradle dependencies --configuration releaseRuntimeClasspath --write-locks ; osv --L gradle.lockfile --json > vuln2.json; jq \".results | length\" vuln2.json")
+	} else {
+		cmd = exec.Command("bash", "-c", "source "+sourcingscript+" ; cd "+appDir+"; gradle dependencies --configuration releaseRuntimeClasspath --write-locks ; osv --L gradle.lockfile --json > vuln2.json; jq \".results | length\" vuln2.json")
+	}
 	bs, err := cmd.CombinedOutput()
 
 	if err != nil {
@@ -77,7 +90,12 @@ func main() {
 	// print(string(cmdOutput[lenth-2]))
 	if !(string(cmdOutput[lenth-2]) == "0") {
 		fmt.Println("Vulnerabilities found in OSV Database!")
-		cmd = exec.Command("bash", "-c", "source "+sourcingscript+" ; cd "+appDir+"; jq \".results[0].packages[]|{package,vulnerabilities}|del(.vulnerabilities[].affected[].versions)| del(.vulnerabilities[].database_specific)|del(.vulnerabilities[].affected[].database_specific)|del(.vulnerabilities[].references)\" vuln2.json")
+		if lengthofargs == 3 {
+			cmd = exec.Command("bash", "-c", "cd "+appDir+"; jq \".results[0].packages[]|{package,vulnerabilities}|del(.vulnerabilities[].affected[].versions)| del(.vulnerabilities[].database_specific)|del(.vulnerabilities[].affected[].database_specific)|del(.vulnerabilities[].references)\" vuln2.json")
+		} else {
+			cmd = exec.Command("bash", "-c", "source "+sourcingscript+" ; cd "+appDir+"; jq \".results[0].packages[]|{package,vulnerabilities}|del(.vulnerabilities[].affected[].versions)| del(.vulnerabilities[].database_specific)|del(.vulnerabilities[].affected[].database_specific)|del(.vulnerabilities[].references)\" vuln2.json")
+		}
+
 		bs, err = cmd.CombinedOutput()
 
 		if err != nil {
