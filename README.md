@@ -1,13 +1,12 @@
 # gradleosvconfig
-osv vulnerability check binary config for gradle project
 
+osv vulnerability check binary config for gradle project
 
 # Features
 
 1. configure in CI/CD pipeline for gradle project.
 2. If 0 vulnerability is detected it exits sucessfully
 3. If any vulnerability is there it prints the details and fails the execution
-
 
 ```js
 {
@@ -77,8 +76,6 @@ Makefile:52: recipe for target 'test' failed
 make: *** [test] Error 1
 ```
 
-
-
 ### Prerequiites:
 
 1.OSV
@@ -87,12 +84,14 @@ make: *** [test] Error 1
 
 3.goc gradleosvconfig
 
-
 ## How to install
 
 ```sh
-
+with devenv
 goc gradleconfig.txt gradle_app_dir sourcing_env_shell_script
+
+without
+goc gradleconfig.txt gradle_app_dir
 ```
 
 ## Command to run
@@ -118,6 +117,7 @@ Please send your bugs to dineshr93@gmail.com
 ## License
 
 [MIT](LICENSE)
+
 ```
 MIT License
 
