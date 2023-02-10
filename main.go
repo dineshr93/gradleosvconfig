@@ -22,6 +22,7 @@ func main() {
 	fmt.Println(strings.Repeat("=", 10), "start of", path.Base(os.Args[0]), strings.Repeat("=", 10))
 	if lengthofargs = len(os.Args); !(lengthofargs >= 3 && lengthofargs <= 4) {
 		fmt.Println("No of arguments given:", lengthofargs)
+		fmt.Println(os.Args)
 		log.Fatalln("Please pass the configfile apprepo for ex: gradleconfig.txt FULL_PATH_GRADLE_APP sourcing_fullpath_scriptsh")
 	} else {
 		fmt.Println("No of arguments given:", lengthofargs)
