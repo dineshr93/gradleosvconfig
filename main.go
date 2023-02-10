@@ -26,6 +26,7 @@ func main() {
 		log.Fatalln("Please pass the configfile apprepo for ex: gradleconfig.txt FULL_PATH_GRADLE_APP sourcing_fullpath_scriptsh")
 	} else {
 		fmt.Println("No of arguments given:", lengthofargs)
+		fmt.Println(os.Args)
 		configFile = os.Args[1]
 		appDir = os.Args[2]
 
