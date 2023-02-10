@@ -13,77 +13,10 @@ osv vulnerability check binary config for gradle project
 git status && echo "============" && git reset --hard && echo "============" && git clean -fd && echo "============" && git status
 ```
 
-# Sample
+# Sample Output
 
 ![Sample](https://github.com/dineshr93/gradleosvconfig/blob/master/sample.png?raw=true)
 
-```js
-{
-  "package": {
-    "name": "com.squareup.okhttp3:okhttp",
-    "version": "3.0.0",
-    "ecosystem": "Maven"
-  },
-  "vulnerabilities": [
-    {
-      "schema_version": "1.3.0",
-      "id": "GHSA-4hc2-jh7r-wrc3",
-      "modified": "2022-12-14T05:09:42.102776Z",
-      "published": "2022-05-13T01:11:51Z",
-      "aliases": [
-        "CVE-2016-2402"
-      ],
-      "summary": "Improper Certificate Validation in OkHttp",
-      "details": "OkHttp before 2.7.4 and 3.x before 3.1.2 allows man-in-the-middle attackers to bypass certificate pinning by sending a certificate chain with a certificate from a non-pinned trusted CA and the pinned certificate.",
-      "affected": [
-        {
-          "package": {
-            "ecosystem": "Maven",
-            "name": "com.squareup.okhttp3:okhttp",
-            "purl": "pkg:maven/com.squareup.okhttp3/okhttp"
-          },
-          "ranges": [
-            {
-              "type": "ECOSYSTEM",
-              "events": [
-                {
-                  "introduced": "0"
-                },
-                {
-                  "fixed": "2.7.4"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "package": {
-            "ecosystem": "Maven",
-            "name": "com.squareup.okhttp3:okhttp",
-            "purl": "pkg:maven/com.squareup.okhttp3/okhttp"
-          },
-          "ranges": [
-            {
-              "type": "ECOSYSTEM",
-              "events": [
-                {
-                  "introduced": "3.0.0"
-                },
-                {
-                  "fixed": "3.1.2"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
-
-Makefile:52: recipe for target 'test' failed
-make: *** [test] Error 1
-```
 
 ### Prerequiites:
 
