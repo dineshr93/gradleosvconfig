@@ -68,3 +68,7 @@ git:
 
 help: ## Show this help
 	@${HELP_CMD}
+
+cp:
+	cp ./bin/goc /sw/bin/gradleosvconfig/bin/goc
+	cp ./bin/goc.exe /sw/bin/gradleosvconfig/bin/goc.exe

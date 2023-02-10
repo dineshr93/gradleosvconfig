@@ -6,8 +6,11 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/dineshr93/gradleosvconfig/model"
 )
 
 // /home/dinesh/asterix2/AddressBookSync
@@ -49,28 +52,37 @@ func main() {
 
 	// println(buildFile)
 
-	b, err := os.ReadFile(configFile) // just pass the file name
+	c, err := os.ReadFile(configFile) // just pass the file name
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	pluggableText := string(b) // convert content to a 'string'
+	pluggableText := string(c) // convert content to a 'string'
 
 	fmt.Println(pluggableText) // print the content as a 'string'
-
-	f, err := os.OpenFile(buildFile, os.O_APPEND|os.O_WRONLY, 0644)
-
+	// read the whole file at once
+	b, err := os.ReadFile(buildFile)
 	if err != nil {
-		log.Fatalln(err)
+		panic(err)
+	}
+	s := string(b)
+	// //check whether s contains substring text
+	if !strings.Contains(s, pluggableText) {
+
+		f, err := os.OpenFile(buildFile, os.O_APPEND|os.O_WRONLY, 0644)
+
+		if err != nil {
+			log.Fatalln(err)
+		}
+		// write in next line else it throws error
+		n, err := f.WriteString("\n" + pluggableText)
+		defer f.Close()
+		if err != nil {
+			log.Fatalln(err)
+		}
+		_ = n
 	}
 
-	// write in next line else it throws error
-	n, err := f.WriteString("\n" + pluggableText)
-	defer f.Close()
-	if err != nil {
-		log.Fatalln(err)
-	}
-	_ = n
 	var cmd *exec.Cmd
 	if lengthofargs == 3 {
 		cmd = exec.Command("bash", "-c", "cd "+appDir+"; gradle dependencies --configuration releaseRuntimeClasspath --write-locks ; osv --L gradle.lockfile --json > vuln2.json; jq \".results | length\" vuln2.json")
@@ -102,10 +114,45 @@ func main() {
 			log.Fatalln(err)
 		}
 		cmdOutput = string(bs)
-		log.Fatalln(cmdOutput)
+
+		s := &model.OSVData{}
+		if err := s.Load(filepath.Join(appDir, "vuln2.json")); err != nil {
+			fmt.Fprintln(os.Stderr, err.Error())
+			os.Exit(1)
+		}
+		s.PrintVuls()
+		e := os.Remove(filepath.Join(appDir, "gradle.lockfile"))
+		if e != nil {
+			log.Fatal(e)
+		}
+		e = os.Remove(filepath.Join(appDir, "settings-gradle.lockfile"))
+		if e != nil {
+			log.Fatal(e)
+		}
+		e = os.Remove(filepath.Join(appDir, "vuln2.json"))
+		if e != nil {
+			log.Fatal(e)
+		}
+
+		fmt.Println(strings.Repeat("=", 10), "End of", path.Base(os.Args[0]), strings.Repeat("=", 10))
+		// log.Fatalln(cmdOutput)
+		os.Exit(1)
 
 	} else {
 		fmt.Println("NO Vulnerabilities found in OSV Database!")
+		e := os.Remove(filepath.Join(appDir, "vuln2.json"))
+		if e != nil {
+			log.Fatal(e)
+		}
+	}
+	// _ = exec.Command("bash", "-c", "cd "+appDir+"; git restore build.gradle")
+	e := os.Remove(filepath.Join(appDir, "gradle.lockfile"))
+	if e != nil {
+		log.Fatal(e)
+	}
+	e = os.Remove(filepath.Join(appDir, "settings-gradle.lockfile"))
+	if e != nil {
+		log.Fatal(e)
 	}
 
 	fmt.Println(strings.Repeat("=", 10), "End of", path.Base(os.Args[0]), strings.Repeat("=", 10))

@@ -11,7 +11,8 @@ osv vulnerability check binary config for gradle project
 ```js
 git status && echo "============" && git reset --hard && echo "============" && git clean -fd && echo "============" && git status
 ```
-
+# Sample
+![Sample](https://github.com/dineshr93/sq/blob/main/sample.png?raw=true)
 
 ```js
 {
