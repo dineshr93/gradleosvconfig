@@ -7,12 +7,15 @@ osv vulnerability check binary config for gradle project
 1. configure in CI/CD pipeline for gradle project.
 2. If 0 vulnerability is detected it exits sucessfully
 3. If any vulnerability is there it prints the details and fails the execution
-4. to reset the config 
+4. to reset the config
+
 ```js
 git status && echo "============" && git reset --hard && echo "============" && git clean -fd && echo "============" && git status
 ```
+
 # Sample
-![Sample](https://github.com/dineshr93/gradleosvconfig/blob/main/sample.png?raw=true)
+
+![Sample](https://github.com/dineshr93/gradleosvconfig/blob/master/sample.png?raw=true)
 
 ```js
 {
